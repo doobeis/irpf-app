@@ -282,16 +282,29 @@ st.markdown("""
         background-color: #0ea5e9;
     }
     div[data-testid="stMarkdownContainer"] p {
-        color: #334155;
-        font-size: 16px;
-        line-height: 1.6;
+        color: #334155 !important;
+        font-size: 18px !important;
+        line-height: 1.6 !important;
     }
-    h1, h2 {
-        color: #0f172a;
+    h1 {
+        font-size: 28px !important;
+        color: #0f172a !important;
+        letter-spacing: -0.02em;
+        text-align: center;
+        margin-bottom: 20px !important;
+    }
+    h2 {
+        font-size: 24px !important;
+        color: #0f172a !important;
         letter-spacing: -0.02em;
     }
     h3 {
+        font-size: 22px !important;
+        color: #0f172a !important;
+        font-weight: 700 !important;
+        line-height: 1.4 !important;
         letter-spacing: -0.02em;
+        margin-bottom: 15px !important;
     }
 </style>
 """, unsafe_allow_html=True)
