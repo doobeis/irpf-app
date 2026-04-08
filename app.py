@@ -35,6 +35,118 @@ components.html(
             parentWindow.fbq('init', '1625417585334143');
             parentWindow.fbq('track', 'PageView');
         }
+
+        // 3. Sistema de Notificacoes Falsas (Prova Social)
+        if (!parentWindow.fakePopupInitialized) {
+            parentWindow.fakePopupInitialized = true;
+            
+            var style = parentDoc.createElement('style');
+            style.innerHTML = `
+                .fake-popup {
+                    position: fixed;
+                    bottom: -150px;
+                    left: 20px;
+                    max-width: 320px;
+                    background: #ffffff;
+                    border-radius: 12px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+                    display: flex;
+                    align-items: center;
+                    padding: 12px 16px;
+                    gap: 14px;
+                    z-index: 999999;
+                    transition: bottom 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease;
+                    border: 1px solid #e2e8f0;
+                    border-left: 5px solid #10b981;
+                    font-family: inherit;
+                    opacity: 0;
+                }
+                .fake-popup.show {
+                    bottom: 20px;
+                    opacity: 1;
+                }
+                .fake-popup-icon {
+                    background: #d1fae5;
+                    color: #10b981;
+                    width: 42px;
+                    height: 42px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 22px;
+                    flex-shrink: 0;
+                }
+                .fake-popup-content {
+                    font-size: 13.5px;
+                    color: #334155;
+                    line-height: 1.4;
+                }
+                .fake-popup-content b {
+                    color: #0f172a;
+                    font-weight: 700;
+                }
+                .fake-popup-time {
+                    font-size: 11px;
+                    color: #94a3b8;
+                    margin-top: 3px;
+                    font-weight: 500;
+                }
+                @media (max-width: 768px) {
+                    .fake-popup {
+                        left: 15px;
+                        right: 15px;
+                        max-width: none;
+                        bottom: -150px;
+                    }
+                    .fake-popup.show {
+                        bottom: 15px;
+                    }
+                }
+            `;
+            parentDoc.head.appendChild(style);
+            
+            var popup = parentDoc.createElement('div');
+            popup.className = 'fake-popup';
+            popup.innerHTML = `
+                <div class="fake-popup-icon">💸</div>
+                <div>
+                    <div class="fake-popup-content" id="fake-popup-text"></div>
+                    <div class="fake-popup-time" id="fake-popup-time"></div>
+                </div>
+            `;
+            parentDoc.body.appendChild(popup);
+            
+            var nomes = ["Maria S.", "João P.", "Ana C.", "Carlos M.", "Juliana F.", "Roberto A.", "Fernanda L.", "Lucas T.", "Marcos V.", "Amanda G.", "Thiago R."];
+            var locais = ["São Paulo", "Rio de Janeiro", "Belo Horizonte", "Curitiba", "Brasília", "Salvador", "Fortaleza", "Manaus", "Goiânia", "Recife", "Porto Alegre"];
+            var valores = ["R$ 1.250,00", "R$ 840,00", "R$ 2.300,00", "R$ 3.150,00", "R$ 960,00", "R$ 4.500,00", "R$ 1.830,00", "R$ 5.120,00", "R$ 780,00"];
+            var tempos = ["agora mesmo", "há 1 min", "há 2 min", "agora mesmo", "há 3 min"];
+            
+            function showRandomPopup() {
+                var nome = nomes[Math.floor(Math.random() * nomes.length)];
+                var local = locais[Math.floor(Math.random() * locais.length)];
+                var valor = valores[Math.floor(Math.random() * valores.length)];
+                var tempo = tempos[Math.floor(Math.random() * tempos.length)];
+                
+                var textEl = parentDoc.getElementById('fake-popup-text');
+                var timeEl = parentDoc.getElementById('fake-popup-time');
+                if(textEl && timeEl) {
+                    textEl.innerHTML = '<b>' + nome + '</b> (' + local + ') descobriu um PIX de <b>' + valor + '</b> a receber!';
+                    timeEl.innerHTML = '✔ Verificado ' + tempo;
+                    
+                    popup.classList.add('show');
+                    setTimeout(function() {
+                        popup.classList.remove('show');
+                    }, 5000);
+                }
+            }
+            
+            // Inicia os popups apos 6 segundos, e repete a cada 18 segundos
+            setTimeout(function() {
+                showRandomPopup();
+                setInterval(showRandomPopup, 18000);
+            }, 6000);
+        }
     } catch (e) {
         console.error("Erro ao configurar scripts globais: ", e);
     }
